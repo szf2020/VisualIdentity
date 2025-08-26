@@ -12,12 +12,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+		<PackageReference Include="Snet.Yolo.Server" Version="25.238.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
 		<PackageReference Include="System.Drawing.Common" Version="9.0.8" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Snet.Yolo.Server\Snet.Yolo.Server.csproj" />
 	</ItemGroup>
 
 </Project>
