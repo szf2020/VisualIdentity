@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<SatelliteResourceLanguages>zh-Hans;en</SatelliteResourceLanguages>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<UserSecretsId>f8fc0ae3-a29b-47d6-b0c2-97a2ebb53a91</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
+		<PackageReference Include="System.Drawing.Common" Version="9.0.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Snet.Yolo.Server\Snet.Yolo.Server.csproj" />
+	</ItemGroup>
+
+</Project>
