@@ -28,9 +28,9 @@ namespace Snet.Yolo.Server.handler
         /// </summary>
         /// <param name="result">统一结果</param>
         /// <returns>指定结果</returns>
-        public static List<ObjectDetectionResultData>? GetOBBDetectionResult(this OperateResult result)
+        public static List<ObbDetectionResultData>? GetOBBDetectionResult(this OperateResult result)
         {
-            if (result.GetDetails(out List<ObjectDetectionResultData>? data))
+            if (result.GetDetails(out List<ObbDetectionResultData>? data))
             {
                 return data;
             }
