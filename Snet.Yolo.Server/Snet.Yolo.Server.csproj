@@ -1,28 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <Authors>Shun</Authors>
-    <Product>Windows</Product>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Description>识别组件：Server（Yolo多模型管理与智能识别服务,检测、定向检测、分类、分割、姿态）</Description>
-    <PackageProjectUrl>https://shunnet.top</PackageProjectUrl>
-    <AuthorsName>Shun</AuthorsName>
-    <CompanyName>Snet</CompanyName>
-    <PackageIcon>Icon.png</PackageIcon>
-    <AccelerateBuildsInVisualStudio>True</AccelerateBuildsInVisualStudio>
-    <Version>25.238.3</Version>
-  </PropertyGroup>
-  <ItemGroup>
-    <Content Include="Icon.png">
-      <PackagePath>
-      </PackagePath>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
-    <PackageReference Include="YoloDotNet" Version="3.1.1" />
-    <PackageReference Include="Snet.DB" Version="25.238.1" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Authors>Shun</Authors>
+		<Product>Windows</Product>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<Description>识别组件：Server（Yolo多模型管理与智能识别服务,检测、定向检测、分类、分割、姿态）</Description>
+		<PackageProjectUrl>https://shunnet.top</PackageProjectUrl>
+		<AuthorsName>Shun</AuthorsName>
+		<CompanyName>Snet</CompanyName>
+		<PackageIcon>Icon.png</PackageIcon>
+		<AccelerateBuildsInVisualStudio>True</AccelerateBuildsInVisualStudio>
+		<Version>25.239.1</Version>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Include="Icon.png">
+			<PackagePath>
+			</PackagePath>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
+		<PackageReference Include="YoloDotNet" Version="3.1.1" />
+		<PackageReference Include="Snet.DB" Version="25.239.1" />
+	</ItemGroup>
 </Project>
