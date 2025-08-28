@@ -1,11 +1,11 @@
 ﻿using Snet.Core.extend;
 using Snet.DB;
 using Snet.Model.data;
+using Snet.Unility;
 using Snet.Yolo.Server.handler;
 using Snet.Yolo.Server.@interface;
 using Snet.Yolo.Server.models.data;
 using Snet.Yolo.Server.models.@enum;
-using Snet.Unility;
 
 namespace Snet.Yolo.Server
 {
@@ -18,7 +18,6 @@ namespace Snet.Yolo.Server
         /// 管理操作<br/>
         /// 有参构造函数
         /// </summary>
-        /// <param name="data">基础数据</param>
         public ManageOperate() : base() { }
 
         /// <summary>
