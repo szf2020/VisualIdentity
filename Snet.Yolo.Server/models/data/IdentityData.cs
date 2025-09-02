@@ -1,5 +1,5 @@
-﻿using Snet.Yolo.Server.models.@enum;
-using Snet.Unility;
+﻿using Snet.Unility;
+using Snet.Yolo.Server.models.@enum;
 using System.ComponentModel;
 using YoloDotNet.Core;
 using YoloDotNet.Models.Interfaces;
