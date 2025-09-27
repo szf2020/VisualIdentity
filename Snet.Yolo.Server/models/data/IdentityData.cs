@@ -1,4 +1,4 @@
-﻿using Snet.Unility;
+﻿using Snet.Utility;
 using Snet.Yolo.Server.models.@enum;
 using System.ComponentModel;
 using YoloDotNet.Core;

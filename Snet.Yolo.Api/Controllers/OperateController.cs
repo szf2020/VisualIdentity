@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Snet.Model.data;
-using Snet.Unility;
+using Snet.Utility;
 using Snet.Yolo.Api.Attribute;
 using Snet.Yolo.Server;
 using Snet.Yolo.Server.handler;

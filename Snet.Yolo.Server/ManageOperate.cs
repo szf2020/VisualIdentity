@@ -1,7 +1,7 @@
 ﻿using Snet.Core.extend;
 using Snet.DB;
 using Snet.Model.data;
-using Snet.Unility;
+using Snet.Utility;
 using Snet.Yolo.Server.handler;
 using Snet.Yolo.Server.@interface;
 using Snet.Yolo.Server.models.data;

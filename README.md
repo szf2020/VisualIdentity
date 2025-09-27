@@ -1,4 +1,4 @@
-# <img src="https://api.shunnet.top/pic/shun.png" height="28"> VisualIdentity  
+# <img src="https://api.shunnet.top/pic/nuget.png" height="28"> VisualIdentity  
 
 > 🚀 **基于 .NET 9 的多模型智能识别平台**  
 > 高效 · 灵活 · 易部署  
@@ -97,13 +97,13 @@ YOLOv5u | YOLOv8 | YOLOv9 | YOLOv10 | YOLOv11 | YOLOv12 | YOLO-World | YOLO-E
 
 ## 📜 许可证  
 
-![License: GPL v3 or later](https://img.shields.io/badge/License-GPLv3+-blue.svg)  
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)  
 
-本项目基于 **GPL v3 或更高版本** 开源。  
-请阅读 [LICENSE](LICENSE.txt) 获取完整条款。  
-⚠️ 软件按 “原样” 提供，不提供任何形式的担保，作者不对使用后果承担责任。  
+本项目基于 **MIT** 开源。  
+请阅读 [LICENSE](LICENSE) 获取完整条款。  
+⚠️ 软件按 “原样” 提供，作者不对使用后果承担责任。  
 
 
-## 🌍 演示  
+## 🌍 查阅  
 
-👉 [点击查看演示地址](https://shunnet.top/EaiUj)  
+👉 [点击跳转](https://shunnet.top/EaiUj)  
