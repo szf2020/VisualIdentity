@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36401.2
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11018.127 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snet.Yolo.Server", "Snet.Yolo.Server\Snet.Yolo.Server.csproj", "{C16C91B4-5131-599F-8E00-D3F009FD162D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snet.Yolo.Api", "Snet.Yolo.Api\Snet.Yolo.Api.csproj", "{09954971-C95B-D9DF-C779-78543F36E0CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snet.Yolo.Test", "Snet.Yolo.Test\Snet.Yolo.Test.csproj", "{DD8262AA-7D3C-4D40-B9B4-8FF6E0BEA8B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{09954971-C95B-D9DF-C779-78543F36E0CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09954971-C95B-D9DF-C779-78543F36E0CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09954971-C95B-D9DF-C779-78543F36E0CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD8262AA-7D3C-4D40-B9B4-8FF6E0BEA8B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD8262AA-7D3C-4D40-B9B4-8FF6E0BEA8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD8262AA-7D3C-4D40-B9B4-8FF6E0BEA8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD8262AA-7D3C-4D40-B9B4-8FF6E0BEA8B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
