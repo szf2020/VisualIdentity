@@ -8,6 +8,7 @@ using Snet.Yolo.Api.Handler;
 using Snet.Yolo.Api.Model;
 using Snet.Yolo.Server;
 using Snet.Yolo.Server.handler;
+using Snet.Yolo.Server.@interface;
 using Snet.Yolo.Server.models.data;
 using Snet.Yolo.Server.models.@enum;
 using YoloDotNet.Core;
@@ -32,20 +33,24 @@ namespace Snet.Yolo.Api.Controllers
         /// </summary>
         private ConfigModel _config;
         /// <summary>
+        /// 姿态处理
+        /// </summary>
+        private PoseEstimationCustomKeyPointColorHandler _poseHandler;
+        /// <summary>
         /// 操作控制器<br/>
         /// 有参构造函数
         /// </summary>
         /// <param name="operate">管理操作</param>
         /// <param name="config">配置</param>
-        public OperateController(ManageOperate operate, IOptions<ConfigModel> config)
+        public OperateController(ManageOperate operate, IOptions<ConfigModel> config, PoseEstimationCustomKeyPointColorHandler poseHandler)
         {
             _operate = operate;
             _config = config.Value;
+            _poseHandler = poseHandler;
         }
 
-
         /// <summary>
-        /// 识别返回依据坐标数据处理完成的图片包含坐标数据
+        /// 识别
         /// </summary>
         /// <param name="onnxIndex">数据库模型下标</param>
         /// <param name="file">识别的文件</param>
@@ -58,13 +63,14 @@ namespace Snet.Yolo.Api.Controllers
         /// <param name="hardwareJson">使用什么硬件来进行运算<br/>
         /// CPU：{"CpuExecutionProvider":{}}<br/>
         /// CUDA：{"CudaExecutionProvider":{"GpuId":0,"PrimeGpu":false}}<br/>
-        /// NVIDIA：{"TensorRtExecutionProvider":{"Precision":0,"GpuId":0,"BuilderOptimizationLevel":3,"EngineCachePath":null,"Int8CalibrationCacheFile":null,"EngineCachePrefix":null}}<br/></param>
+        /// NVIDIA：{"TensorRtExecutionProvider":{"Precision":0,"GpuId":0,"BuilderOptimizationLevel":3,"EngineCachePath":null,"Int8CalibrationCacheFile":null,"EngineCachePrefix":null}}
+        /// </param>
         /// <returns>
         /// 识别结果<br/>
-        /// 返回依据坐标数据处理完成的图片
+        /// 返回识别到的坐标数据
         /// </returns>
         [HttpPost]
-        public async Task<OperateResult> IdentityAsync(int onnxIndex, [AllowedFileType([".jpg", ".jpeg", ".png", ".bmp"])] IFormFile file, string paramJson = "{\"Confidence\":0.2,\"Iou\":0.7}", string hardwareJson = "{\"CpuExecutionProvider\":{}}")
+        public async Task<OperateResult> IdentityAsync(int onnxIndex, [AllowedFileType([".jpg", ".jpeg", ".png", ".bmp"])] IFormFile file, string paramJson, string hardwareJson)
         {
             OperateResult result = await QueryAsync(onnxIndex);
             if (result.GetDetails(out List<OnnxData>? datas))
@@ -77,6 +83,84 @@ namespace Snet.Yolo.Api.Controllers
                     Hardware = hardwareJson.ToJsonEntity<HardwareData>()?.GetHardware() ?? new CpuExecutionProvider(),
                     IdentifyType = onnxData.onnxType ??= OnnxType.ObjectDetection,
                 });
+
+                using var ms = new MemoryStream();
+                await file.CopyToAsync(ms);
+                byte[] bytes = ms.ToArray();
+
+                IData data = null;
+                switch (onnxData.onnxType ??= OnnxType.ObjectDetection)
+                {
+                    case OnnxType.ObjectDetection:
+                        ObjectDetectionData objectDetection = paramJson.ToJsonEntity<ObjectDetectionData>();
+                        objectDetection.File = bytes;
+                        data = objectDetection;
+                        break;
+                    case OnnxType.Segmentation:
+                        SegmentationData segmentation = paramJson.ToJsonEntity<SegmentationData>();
+                        segmentation.File = bytes;
+                        data = segmentation;
+                        break;
+                    case OnnxType.Classification:
+                        ClassificationData classification = paramJson.ToJsonEntity<ClassificationData>();
+                        classification.File = bytes;
+                        data = classification;
+                        break;
+                    case OnnxType.PoseEstimation:
+                        PoseEstimationData poseEstimation = paramJson.ToJsonEntity<PoseEstimationData>();
+                        poseEstimation.File = bytes;
+                        data = poseEstimation;
+                        break;
+                    case OnnxType.ObbDetection:
+                        ObbDetectionData obbDetection = paramJson.ToJsonEntity<ObbDetectionData>();
+                        obbDetection.File = bytes;
+                        data = obbDetection;
+                        break;
+                }
+                return await operate.RunAsync(data);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 识别返回依据坐标数据处理完成的绘制后图片包含坐标数据<br/>
+        /// 注意:绘制将占用大量时间
+        /// </summary>
+        /// <param name="onnxIndex">数据库模型下标</param>
+        /// <param name="file">识别的文件</param>
+        /// <param name="paramJson">识别基础属性<br/>
+        /// Classification：{"Classes":1}:分类数据<br/>
+        /// ObbDetection：{"Confidence":0.2,"Iou":0.7}:定向检测数据<br/>
+        /// ObjectDetection：{"Confidence":0.2,"Iou":0.7}:检测数据<br/>
+        /// PoseEstimation：{"Confidence":0.2,"Iou":0.7}:姿态识别数据<br/>
+        /// Segmentation：{"Confidence":0.2,"Iou":0.7,"PixelConfedence":0.65}:分割数据</param>
+        /// <param name="hardwareJson">使用什么硬件来进行运算<br/>
+        /// CPU：{"CpuExecutionProvider":{}}<br/>
+        /// CUDA：{"CudaExecutionProvider":{"GpuId":0,"PrimeGpu":false}}<br/>
+        /// NVIDIA：{"TensorRtExecutionProvider":{"Precision":0,"GpuId":0,"BuilderOptimizationLevel":3,"EngineCachePath":null,"Int8CalibrationCacheFile":null,"EngineCachePrefix":null}}
+        /// </param>
+        /// <returns>
+        /// 识别结果<br/>
+        /// 绘制后图片包含坐标数据
+        /// </returns>
+        [HttpPost]
+        public async Task<OperateResult> IdentityDrawAsync(int onnxIndex, [AllowedFileType([".jpg", ".jpeg", ".png", ".bmp"])] IFormFile file, string paramJson, string hardwareJson = "{\"CpuExecutionProvider\":{}}")
+        {
+            OperateResult result = await QueryAsync(onnxIndex);
+            if (result.GetDetails(out List<OnnxData>? datas))
+            {
+                string ms = DateTime.Now.ToString(_config.NameFormat);
+                TimeHandler.Instance(ms).StartRecord();
+
+                OnnxData onnxData = datas[0];
+                IdentityOperate operate = IdentityOperate.Instance(new IdentityData
+                {
+                    SN = PublicHandler.DefaultSN,
+                    OnnxPath = Path.Combine(onnxData.path, onnxData.name),
+                    Hardware = hardwareJson.ToJsonEntity<HardwareData>()?.GetHardware() ?? new CpuExecutionProvider(),
+                    IdentifyType = onnxData.onnxType ??= OnnxType.ObjectDetection,
+                });
+
                 string suffix = file.GetSuffix();
                 byte[] imageBytes = await file.GetBytesAsync();
                 using SKImage image = SKImage.FromEncodedData(imageBytes);
@@ -96,10 +180,10 @@ namespace Snet.Yolo.Api.Controllers
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
                                 string name = ImageHandler.SaveImage(ibytes, imageBytes, objectDetectionResultDatas, onnxData.onnxType.Value, _config);
                                 string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ObjectDetectionResultData>>(objectDetectionResultDatas, url));
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ObjectDetectionResultData>>(objectDetectionResultDatas, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure");
+                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
                     case OnnxType.Segmentation:
                         SegmentationData segmentation = paramJson.ToJsonEntity<SegmentationData>();
                         segmentation.File = imageBytes;
@@ -113,10 +197,10 @@ namespace Snet.Yolo.Api.Controllers
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
                                 string name = ImageHandler.SaveImage(ibytes, imageBytes, segmentationDatas, onnxData.onnxType.Value, _config);
                                 string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<SegmentationResultData>>(segmentationDatas, url));
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<SegmentationResultData>>(segmentationDatas, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure");
+                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
                     case OnnxType.Classification:
                         ClassificationData classification = paramJson.ToJsonEntity<ClassificationData>();
                         classification.File = imageBytes;
@@ -130,10 +214,10 @@ namespace Snet.Yolo.Api.Controllers
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
                                 string name = ImageHandler.SaveImage(ibytes, imageBytes, classificationDatas, onnxData.onnxType.Value, _config);
                                 string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ClassificationResultData>>(classificationDatas, url));
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ClassificationResultData>>(classificationDatas, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure");
+                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
                     case OnnxType.PoseEstimation:
                         PoseEstimationData poseEstimation = paramJson.ToJsonEntity<PoseEstimationData>();
                         poseEstimation.File = imageBytes;
@@ -143,14 +227,14 @@ namespace Snet.Yolo.Api.Controllers
                             if (poseEstimationDatas.Count > 0)
                             {
                                 List<PoseEstimation> datasResult = poseEstimationDatas.ToPoseEstimation();
-                                using SKBitmap sKBitmap = image.Draw(datasResult);
+                                using SKBitmap sKBitmap = image.Draw(datasResult, new PoseDrawingOptions { KeyPointMarkers = _poseHandler.GetKeyPoints(), PoseConfidence = poseEstimation.Confidence, BorderThickness = 3 });
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
                                 string name = ImageHandler.SaveImage(ibytes, imageBytes, poseEstimationDatas, onnxData.onnxType.Value, _config);
                                 string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<PoseEstimationResultData>>(poseEstimationDatas, url));
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<PoseEstimationResultData>>(poseEstimationDatas, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure");
+                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
                     case OnnxType.ObbDetection:
                         ObbDetectionData obbDetection = paramJson.ToJsonEntity<ObbDetectionData>();
                         obbDetection.File = imageBytes;
@@ -164,13 +248,13 @@ namespace Snet.Yolo.Api.Controllers
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
                                 string name = ImageHandler.SaveImage(ibytes, imageBytes, obbDetections, onnxData.onnxType.Value, _config);
                                 string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ObbDetectionResultData>>(obbDetections, url));
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ObbDetectionResultData>>(obbDetections, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure");
+                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
                 }
             }
-            return OperateResult.CreateFailureResult("Identity Failure");
+            return result;
         }
 
         /// <summary>
@@ -277,8 +361,8 @@ namespace Snet.Yolo.Api.Controllers
             // 读取文件字节数据
             byte[] bytes = System.IO.File.ReadAllBytes(path);
 
-            // 以 image/png 格式返回图片
-            return File(bytes, "image/png");
+            // 以 image/jpeg 格式返回图片
+            return File(bytes, "image/jpeg");
         }
 
     }

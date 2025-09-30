@@ -48,8 +48,8 @@ namespace Snet.Yolo.Api.Handler
         public static byte[] GteImageByte(this SKBitmap sKBitmap, out string contentType)
         {
             using var resultImage = SKImage.FromBitmap(sKBitmap);
-            using var encoded = resultImage.Encode(SKEncodedImageFormat.Png, 100);
-            contentType = "image/png";
+            using var encoded = resultImage.Encode(SKEncodedImageFormat.Jpeg, 100);
+            contentType = "image/jpeg";
             return encoded.ToArray();
         }
 

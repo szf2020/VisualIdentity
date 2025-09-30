@@ -24,6 +24,8 @@ namespace Snet.Yolo.Api
 
             builder.Services.Configure<ConfigModel>(configuration);
 
+            builder.Services.AddSingleton(new PoseEstimationCustomKeyPointColorHandler());
+
             builder.Services.AddSingleton(ManageOperate.Instance(PublicHandler.DefaultSN));
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {
