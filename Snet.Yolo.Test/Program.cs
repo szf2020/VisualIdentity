@@ -1,6 +1,5 @@
 ﻿using SkiaSharp;
 using Snet.Model.data;
-using Snet.Utility;
 using Snet.Yolo.Server;
 using Snet.Yolo.Server.handler;
 using Snet.Yolo.Server.models.data;
@@ -19,26 +18,6 @@ namespace Snet.Yolo.Test
 
             // 原始图片路径
             string imagePath = "?????";
-
-            #region 如何把API过来的Json 数据反序列化成对象,并实现绘制功能
-            //如何把API过来的Json 数据反序列化成对象,并实现绘制功能
-            //以检测功能为例
-
-            // json 数据
-            string apiJosn = "?????";
-
-            //转换结果
-            List<ObjectDetection> results = apiJosn.ToJsonEntity<List<ObjectDetectionResultData>>().ToObjectDetection();
-
-            //加载图片
-            using SKImage image = SKImage.FromEncodedData(imagePath);
-
-            //绘制结果
-            using SKBitmap resultImage = image.Draw(results);
-            #endregion
-
-            #region 本地调用识别并绘制
-            //本地调用识别并绘制
 
             //模型路径
             string onnxModel = "?????";
@@ -68,7 +47,6 @@ namespace Snet.Yolo.Test
 
             //绘制结果
             using SKBitmap resultImage2 = image2.Draw(results2);
-            #endregion
 
         }
     }

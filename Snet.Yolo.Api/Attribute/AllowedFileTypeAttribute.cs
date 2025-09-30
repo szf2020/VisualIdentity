@@ -21,7 +21,7 @@ namespace Snet.Yolo.Api.Attribute
                 var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
                 if (!_extensions.Contains(extension))
                 {
-                    return new ValidationResult($"文件类型不被支持，仅允许: {string.Join(", ", _extensions)}");
+                    return new ValidationResult($"Unsupported file type. Only allowed: {string.Join(", ", _extensions)}");
                 }
             }
             return ValidationResult.Success;

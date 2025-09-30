@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Snet.Yolo.Api.Handler;
+using Snet.Yolo.Api.Model;
 using Snet.Yolo.Server;
 using Snet.Yolo.Server.handler;
 using Snet.Yolo.Server.models.@enum;
@@ -12,9 +14,16 @@ namespace Snet.Yolo.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            IConfiguration configuration = builder.Configuration.GetSection("ConfigModel");
+            ConfigModel config = configuration.Get<ConfigModel>();
+            HistoryFileHandler handler = HistoryFileHandler.Instance(config.BasePath);
+            _ = handler.DeleteLogicAsync(CancellationToken.None);
+
+            builder.Services.Configure<ConfigModel>(configuration);
+
             builder.Services.AddSingleton(ManageOperate.Instance(PublicHandler.DefaultSN));
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {

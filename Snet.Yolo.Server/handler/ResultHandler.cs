@@ -152,7 +152,7 @@ namespace Snet.Yolo.Server.handler
                 Label = s.Label,
                 Confidence = s.Confidence,
                 BoundingBox = s.BoundingBox,
-                BitPackedPixelMask = s.BitPackedPixelMask
+                BitPackedPixelMask = s.BitPackedPixelMask,
             }).ToList();
         }
 
@@ -183,6 +183,7 @@ namespace Snet.Yolo.Server.handler
                 Confidence = s.Confidence,
                 BoundingBox = s.BoundingBox,
                 OrientationAngle = s.OrientationAngle,
+                Position = s.BoundingBox.ToString()
             }).ToList();
         }
 
@@ -198,6 +199,7 @@ namespace Snet.Yolo.Server.handler
                 Label = s.Label,
                 Confidence = s.Confidence,
                 BoundingBox = s.BoundingBox,
+                Position = s.BoundingBox.ToString()
             }).ToList();
         }
 
@@ -214,6 +216,7 @@ namespace Snet.Yolo.Server.handler
                 Confidence = s.Confidence,
                 BoundingBox = s.BoundingBox,
                 KeyPoints = s.KeyPoints,
+                Position = s.BoundingBox.ToString()
             }).ToList();
         }
 
@@ -229,7 +232,8 @@ namespace Snet.Yolo.Server.handler
                 Label = s.Label,
                 Confidence = s.Confidence,
                 BoundingBox = s.BoundingBox,
-                BitPackedPixelMask = s.BitPackedPixelMask
+                BitPackedPixelMask = s.BitPackedPixelMask,
+                Position = s.BoundingBox.ToString()
             }).ToList();
         }
     }
