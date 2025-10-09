@@ -12,8 +12,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-		<PackageReference Include="Snet.Yolo.Server" Version="25.273.2" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.5" />
+		<PackageReference Include="Snet.Yolo.Server" Version="25.282.2" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
 		<PackageReference Include="System.Drawing.Common" Version="9.0.9" />
 	</ItemGroup>
 
