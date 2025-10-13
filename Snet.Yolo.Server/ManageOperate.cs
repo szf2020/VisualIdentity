@@ -12,7 +12,7 @@ namespace Snet.Yolo.Server
     /// <summary>
     /// 管理操作
     /// </summary>
-    public class ManageOperate : CoreUnify<ManageOperate, string>, IManage, IDisposable
+    public class ManageOperate : CoreUnify<ManageOperate, string>, IManage, IDisposable, IAsyncDisposable
     {
         /// <summary>
         /// 管理操作<br/>

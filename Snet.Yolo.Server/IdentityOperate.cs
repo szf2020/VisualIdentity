@@ -13,7 +13,7 @@ namespace Snet.Yolo.Server
     /// <summary>
     /// 识别操作
     /// </summary>
-    public class IdentityOperate : CoreUnify<IdentityOperate, IdentityData>, IIdentity, IDisposable
+    public class IdentityOperate : CoreUnify<IdentityOperate, IdentityData>, IIdentity, IDisposable, IAsyncDisposable
     {
         /// <summary>
         /// 识别操作<br/>
@@ -184,6 +184,22 @@ namespace Snet.Yolo.Server
                 _yolo = null;
             }
             base.Dispose();
+        }
+
+        /// <inheritdoc/>
+        public override async ValueTask DisposeAsync()
+        {
+            if (tokenSource != null)
+            {
+                tokenSource.Cancel();
+                tokenSource = null;
+            }
+            if (_yolo != null)
+            {
+                _yolo.Dispose();
+                _yolo = null;
+            }
+            await base.DisposeAsync();
         }
     }
 }
