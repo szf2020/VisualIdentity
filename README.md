@@ -1,7 +1,7 @@
 # <img src="https://api.shunnet.top/pic/nuget.png" height="28"> VisualIdentity  
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)  
-[![Repo](https://img.shields.io/badge/Repository-shunnet/Rpc-blue)](https://github.com/shunnet/VisualIdentity)  
+[![Repo](https://img.shields.io/badge/Repository-shunnet/VisualIdentity-blue)](https://github.com/shunnet/VisualIdentity)  
 
 > 🚀 **基于 .NET 9 的多模型智能识别平台**  
 > 高效 · 灵活 · 易部署  
