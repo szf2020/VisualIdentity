@@ -1,0 +1,383 @@
+﻿<UserControl
+    x:Class="Snet.Yolo.Tool.View.YoloDetectView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:Snet.Yolo.Tool.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Snet.Yolo.Tool.ViewModel"
+    xmlns:snet="https://shunnet.top"
+    xmlns:t="clr-namespace:Snet.Yolo.Tool.Data"
+    xmlns:ui="http://materialdesigninxaml.net/winfx/xaml/themes"
+    snet:ResxLocalizationProvider.DefaultAssembly="Snet.Yolo.Tool"
+    snet:ResxLocalizationProvider.DefaultDictionary="Language">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <snet:RadioButtonConverter x:Key="RadioButtonConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <model:YoloDetectViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <GroupBox
+            Margin="5"
+            ui:ElevationAssist.Elevation="Dp2"
+            ui:GroupBoxAssist.HeaderPadding="7"
+            Header="{Binding}"
+            Style="{StaticResource MaterialDesignCardGroupBox}">
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <ui:PackIcon Grid.Column="0" Kind="Tools" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="{snet:Loc 参数}"
+                            TextAlignment="Center" />
+                    </Grid>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+            <StackPanel Orientation="Vertical">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <snet:TextBoxControl
+                        Grid.Column="0"
+                        Margin="0,0,0,0"
+                        Hint="{snet:Loc 模型路径}"
+                        Icon="{DynamicResource Path}"
+                        Text="{Binding OnnxModel}" />
+                    <snet:ButtonControl
+                        Grid.Column="1"
+                        Margin="10,0,0,0"
+                        ui:ButtonAssist.CornerRadius="5"
+                        Command="{Binding OnnxModelSelect}"
+                        Content="{snet:Loc 选择}"
+                        Icon="{DynamicResource Select}" />
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <snet:TextBoxControl
+                        Margin="0,10,0,0"
+                        Hint="{snet:Loc 原始图片路径}"
+                        Icon="{DynamicResource Path}"
+                        Text="{Binding SourcelPath}" />
+                    <snet:ButtonControl
+                        Grid.Column="1"
+                        Margin="10,10,0,0"
+                        ui:ButtonAssist.CornerRadius="5"
+                        Command="{Binding SourcelPathSelect}"
+                        Content="{snet:Loc 选择}"
+                        Icon="{DynamicResource Select}" />
+                </Grid>
+                <Grid Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <snet:TextBoxControl
+                        Grid.Column="0"
+                        Margin="0,0,10,0"
+                        Hint="{snet:Loc 置信度阈值}"
+                        Icon="{DynamicResource Value}"
+                        Text="{Binding Confidence}" />
+                    <snet:TextBoxControl
+                        Grid.Column="1"
+                        Margin="0,0,0,0"
+                        Hint="{snet:Loc 交并比阈值}"
+                        Icon="{DynamicResource Value}"
+                        Text="{Binding Iou}" />
+                </Grid>
+                <Grid>
+                    <snet:TextBoxControl
+                        Margin="0,15,0,0"
+                        Hint="{snet:Loc 对应硬件的JSON字符串}"
+                        Icon="{DynamicResource 硬件}"
+                        Text="{Binding DeviceJson}" />
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox
+            Grid.Row="1"
+            Margin="5,0,5,0"
+            Padding="0"
+            ui:ElevationAssist.Elevation="Dp2"
+            ui:GroupBoxAssist.HeaderPadding="7"
+            Header="{Binding}"
+            Style="{StaticResource MaterialDesignCardGroupBox}">
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <ui:PackIcon Grid.Column="0" Kind="Function" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="{snet:Loc 功能}"
+                            TextAlignment="Center" />
+                    </Grid>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <snet:ButtonControl
+                    Margin="0,5,5,5"
+                    Command="{Binding VA_Image}"
+                    Content="{snet:Loc 验证所有}"
+                    Icon="{DynamicResource 所有}" />
+                <snet:ButtonControl
+                    Margin="0,5,5,5"
+                    Command="{Binding V_Image_Stop}"
+                    Content="{snet:Loc 停止验证}"
+                    Icon="{DynamicResource Stop}" />
+                <snet:ButtonControl
+                    Margin="0,5,5,5"
+                    Command="{Binding VS_Image}"
+                    Content="{snet:Loc 验证选中}"
+                    Icon="{DynamicResource 选中}" />
+                <snet:ButtonControl
+                    Margin="0,5,5,5"
+                    Command="{Binding SV_Image}"
+                    Content="{snet:Loc 向上验证}"
+                    Icon="{DynamicResource Up}" />
+                <snet:ButtonControl
+                    Margin="0,5,5,5"
+                    Command="{Binding XV_Image}"
+                    Content="{snet:Loc 向下验证}"
+                    Icon="{DynamicResource Down}" />
+
+                <snet:ButtonControl
+                    Margin="0,5,5,5"
+                    Command="{Binding Start}"
+                    Content="{snet:Loc 开始统计}"
+                    Icon="{DynamicResource Confirm}" />
+
+                <snet:ButtonControl
+                    Margin="0,5,5,5"
+                    Command="{Binding Stop}"
+                    Content="{snet:Loc 结束统计}"
+                    Icon="{DynamicResource Cancel}" />
+            </StackPanel>
+        </GroupBox>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <GroupBox
+                Grid.Column="0"
+                Margin="5,5,0,5"
+                Padding="5"
+                ui:ElevationAssist.Elevation="Dp2"
+                ui:GroupBoxAssist.HeaderPadding="7"
+                Header="{Binding}"
+                Style="{StaticResource MaterialDesignCardGroupBox}"
+                Visibility="{Binding ImagesVisibility}">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:PackIcon Grid.Column="0" Kind="Picture360" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{snet:Loc 原始图片}"
+                                TextAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}">
+                    <ItemsControl
+                        Foreground="{DynamicResource MaterialDesign.Brush.Secondary}"
+                        Grid.IsSharedSizeScope="True"
+                        ItemsSource="{Binding ItemsControlSource}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type t:ItemsControlBody}">
+                                <Border x:Name="Border" Padding="8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="Checkerz" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource MaterialDesign.Brush.Secondary}"
+                                            IsChecked="{Binding IsSelected}"
+                                            Style="{StaticResource MaterialDesignSecondaryCheckBox}" />
+                                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Name}" />
+                                            <TextBlock HorizontalAlignment="Right" Text="{Binding Description}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MaterialDesignSelection}" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </GroupBox>
+            <GroupBox
+                Grid.Column="1"
+                Margin="5,5,0,5"
+                Padding="5"
+                ui:ElevationAssist.Elevation="Dp2"
+                ui:GroupBoxAssist.HeaderPadding="7"
+                Header="{Binding}"
+                Style="{StaticResource MaterialDesignCardGroupBox}">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:PackIcon Grid.Column="0" Kind="Message" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{snet:Loc 消息}"
+                                TextAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                <Grid>
+                    <Button
+                        Width="80"
+                        Height="30"
+                        Margin="0,-36,-10,0"
+                        Padding="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        ui:ButtonAssist.CornerRadius="0,6,0,0"
+                        Command="{Binding MessageClear}"
+                        Style="{StaticResource MaterialDesignFlatSecondaryButton}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Image
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Source="{DynamicResource Clear}"
+                                    Stretch="Fill" />
+                            </Grid>
+                            <Grid Grid.Column="2">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{snet:Loc 清空}"
+                                    TextAlignment="Center" />
+                            </Grid>
+                        </Grid>
+                    </Button>
+                    <TextBox
+                        Margin="0,0,0,0.5"
+                        AcceptsReturn="True"
+                        BorderThickness="0,0,0,0"
+                        Foreground="{DynamicResource MaterialDesign.Brush.Secondary}"
+                        IsReadOnly="True"
+                        Style="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                        Text="{Binding Message}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Hidden">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="TextChanged">
+                                <snet:EventCommand Command="{Binding MessageTextChanged}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+                </Grid>
+            </GroupBox>
+            <GroupBox
+                Grid.Column="2"
+                Margin="5"
+                Padding="5"
+                ui:ElevationAssist.Elevation="Dp2"
+                ui:GroupBoxAssist.HeaderPadding="7"
+                Header="{Binding}"
+                Style="{StaticResource MaterialDesignCardGroupBox}">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <ui:PackIcon Grid.Column="0" Kind="Picture" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{snet:Loc 验证结果}"
+                                TextAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+                <Image Source="{Binding ResultImage}" Stretch="Fill">
+                    <!--  右键菜单  -->
+                    <Image.ContextMenu>
+                        <ContextMenu VerticalContentAlignment="Center">
+                            <MenuItem Header="{snet:Loc 复制结果}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <snet:EventCommand Command="{Binding MenuItemCopyClick}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <MenuItem.Icon>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image
+                                            Width="20"
+                                            Height="20"
+                                            VerticalAlignment="Center"
+                                            Source="{DynamicResource Copy}" />
+                                    </StackPanel>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Image.ContextMenu>
+                </Image>
+            </GroupBox>
+
+        </Grid>
+    </Grid>
+</UserControl>

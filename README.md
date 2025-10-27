@@ -35,7 +35,7 @@
 dotnet add package Snet.Yolo.Server
 ```
 
-### 💡 使用示例
+### 💡 调用示例
 
 ```csharp
 using SkiaSharp;
@@ -55,6 +55,8 @@ namespace Snet.Yolo.Test
     {
         static async Task Main(string[] args)
         {
+            //可以直接启用 Snet.Yolo.Tool 来进行调试
+
             //????? 为对应数据
 
             // 原始图片路径
@@ -156,6 +158,7 @@ YOLOv5u | YOLOv8 | YOLOv9 | YOLOv10 | YOLOv11 | YOLOv12 | YOLO-World | YOLO-E
 - 🌐 [Shunnet.top](https://shunnet.top)  
 - 🔥 [Ultralytics](https://github.com/ultralytics/ultralytics)  
 - ⚡ [YoloDotNet](https://github.com/NickSwardh/YoloDotNet)  
+- 🖥️ [WpfMUI](https://github.com/shunnet/WpfMUI)  
 
 
 ## 📜 许可证  
