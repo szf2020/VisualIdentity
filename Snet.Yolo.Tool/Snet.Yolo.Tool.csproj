@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Snet.Windows.Controls" Version="25.300.1" />
-		<PackageReference Include="Snet.Yolo.Server" Version="25.300.1" />
+		<PackageReference Include="Snet.Yolo.Server" Version="25.304.1" />
 	</ItemGroup>
 
 	<ItemGroup>
