@@ -6,13 +6,13 @@
     <Authors>Shun</Authors>
     <Product>Yolo</Product>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Description>识别组件：Server（Yolo多模型管理与智能识别服务,检测、定向检测、分类、分割、姿态）</Description>
+    <Description>识别组件：Server（Yolo多模型管理与智能识别服务，检测、定向检测、分类、分割、姿态）</Description>
     <PackageProjectUrl>https://shunnet.top</PackageProjectUrl>
     <AuthorsName>Shun</AuthorsName>
     <CompanyName>Snet</CompanyName>
     <PackageIcon>icon.png</PackageIcon>
     <AccelerateBuildsInVisualStudio>True</AccelerateBuildsInVisualStudio>
-    <Version>25.304.1</Version>
+    <Version>25.307.1</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -24,6 +24,6 @@
   <ItemGroup>
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.1" />
     <PackageReference Include="YoloDotNet" Version="3.1.1" />
-    <PackageReference Include="Snet.DB" Version="25.304.1" />
+    <PackageReference Include="Snet.DB" Version="25.307.1" />
   </ItemGroup>
 </Project>
