@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)  
 [![Repo](https://img.shields.io/badge/Repository-shunnet/VisualIdentity-blue)](https://github.com/shunnet/VisualIdentity)  
 
-> 🚀 **基于 .NET 9 的多模型智能识别平台**  
+> 🚀 **基于 .NET 10 的多模型智能识别平台**  
 > 高效 · 灵活 · 易部署  
 
 
@@ -13,7 +13,7 @@
 无论是 **检测、分类、分割、姿态估计、定向检测**，往往都需要同时部署多个模型，传统方案在 **效率** 和 **易用性** 上总会遇到瓶颈。  
 
 **VisualIdentity** 正是为了解决这一系列问题而生。  
-它结合了 **.NET 9** 的现代化能力、[YoloDotNet](https://github.com/NickSwardh/YoloDotNet) 的高性能推理、以及 **SQLite** 的轻量级管理，为开发者提供一个 **开箱即用** 的智能识别平台。  
+它结合了 **.NET 10** 的现代化能力、[YoloDotNet](https://github.com/NickSwardh/YoloDotNet) 的高性能推理、以及 **SQLite** 的轻量级管理，为开发者提供一个 **开箱即用** 的智能识别平台。  
 
 ✅ 多模型管理  
 ✅ 单机多任务识别  
