@@ -12,6 +12,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+		<PackageReference Include="Snet.Yolo.Server" Version="25.329.1" />
 		<!--<PackageReference Include="Snet.Yolo.Server" Version="25.325.1" />-->
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
 		<PackageReference Include="System.Drawing.Common" Version="10.0.0" />
@@ -19,10 +20,6 @@
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Snet.Yolo.Server\Snet.Yolo.Server.csproj" />
 	</ItemGroup>
 
 </Project>
