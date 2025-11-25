@@ -6,6 +6,7 @@ using Snet.Yolo.Server.models.data;
 using Snet.Yolo.Server.models.@enum;
 using Snet.Yolo.Tool.Data;
 using System.IO;
+using System.Text.Json.Serialization;
 using YoloDotNet.Extensions;
 using YoloDotNet.Models;
 
@@ -164,6 +165,7 @@ public class FallDetector
     /// <summary>
     /// 人体关键部位定义（按模型索引顺序）
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum Body
     {
         鼻子, 左眼, 右眼, 左耳, 右耳,

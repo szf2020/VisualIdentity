@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace Snet.Yolo.Server.models.@enum
 {
@@ -6,6 +7,7 @@ namespace Snet.Yolo.Server.models.@enum
     /// 识别类型<br/>
     /// https://docs.ultralytics.com/zh/tasks/#detection
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum OnnxType
     {
         /// <summary>

@@ -70,7 +70,7 @@ namespace Snet.Yolo.Api.Controllers
         /// 返回识别到的坐标数据
         /// </returns>
         [HttpPost]
-        public async Task<OperateResult> IdentityAsync(int onnxIndex, [AllowedFileType([".jpg", ".jpeg", ".png", ".bmp"])] IFormFile file, string paramJson, string hardwareJson)
+        public async Task<OperateResult> IdentityAsync(int onnxIndex, [AllowedFileType([".jpg", ".jpeg", ".png", ".bmp"])] IFormFile file, string paramJson, string hardwareJson = "{\"CpuExecutionProvider\":{}}")
         {
             OperateResult result = await QueryAsync(onnxIndex);
             if (result.GetDetails(out List<OnnxData>? datas))

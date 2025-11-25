@@ -1,4 +1,5 @@
-﻿using YoloDotNet.Models;
+﻿using System.Text.Json.Serialization;
+using YoloDotNet.Models;
 
 namespace Snet.Yolo.Server.handler
 {
@@ -22,6 +23,7 @@ namespace Snet.Yolo.Server.handler
         /// - Shoulders / Elbows / Wrists（肩、肘、腕）用于上肢姿态跟踪<br/>
         /// - Hips / Knees / Ankles（髋、膝、踝）用于下肢姿态与运动分析
         /// </remarks>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public enum KeyPointType
         {
             /// <summary>鼻子</summary>
@@ -88,6 +90,7 @@ namespace Snet.Yolo.Server.handler
         /// - 增强人体姿态渲染的可读性<br/>
         /// - 便于在调试或展示时快速识别关键点分组<br/>
         /// </remarks>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public enum KeyPointColor
         {
             /// <summary>绿色 (#00FF00)，常用于头部关键点</summary>

@@ -8,34 +8,35 @@
 		<UseWPF>true</UseWPF>
 		<Version>2.0.2.5</Version>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<SatelliteResourceLanguages>zh-Hans;en</SatelliteResourceLanguages>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="icon.ico" />
+		<None Remove="icon.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Snet.Windows.Controls" Version="25.325.1" />
-		<PackageReference Include="Snet.Yolo.Server" Version="25.325.1" />
+		<PackageReference Include="Snet.Windows.Controls" Version="25.329.1" />
+		<PackageReference Include="Snet.Yolo.Server" Version="25.329.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Icon.ico" />
+		<Resource Include="Icon.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Language.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Language.resx</DependentUpon>
-	  </Compile>
+		<Compile Update="Language.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Language.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Language.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Language.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Language.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Language.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

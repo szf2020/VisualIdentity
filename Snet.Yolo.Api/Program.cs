@@ -6,9 +6,7 @@ using Snet.Yolo.Api.Handler;
 using Snet.Yolo.Api.Model;
 using Snet.Yolo.Server;
 using Snet.Yolo.Server.handler;
-using Snet.Yolo.Server.models.@enum;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace Snet.Yolo.Api
@@ -50,6 +48,10 @@ namespace Snet.Yolo.Api
             var builder = WebApplication.CreateBuilder(args);
             IConfiguration configuration = builder.Configuration.GetSection("ConfigModel");
             ConfigModel config = configuration.Get<ConfigModel>();
+            if (!Directory.Exists(config.BasePath))
+            {
+                Directory.CreateDirectory(config.BasePath);
+            }
             HistoryFileHandler handler = HistoryFileHandler.Instance(config.BasePath);
             _ = handler.DeleteLogicAsync(CancellationToken.None);
 
@@ -79,11 +81,6 @@ namespace Snet.Yolo.Api
             builder.Services.AddSwaggerGen(opt =>
             {
                 opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Snet", Version = "v1" });
-                opt.MapType<Dictionary<OnnxType, List<string>>>(() => new OpenApiSchema()
-                {
-                    Type = JsonSchemaType.String,
-                    Enum = Enum.GetNames(typeof(OnnxType)).Select(n => new JsonNodeExtension(n)).Cast<JsonNode>().ToList()
-                });
                 opt.SchemaFilter<DictionaryTKeyEnumTValueSchemaFilter>();
                 opt.DescribeAllParametersInCamelCase();
                 opt.IgnoreObsoleteActions();
