@@ -48,10 +48,6 @@ namespace Snet.Yolo.Api
             var builder = WebApplication.CreateBuilder(args);
             IConfiguration configuration = builder.Configuration.GetSection("ConfigModel");
             ConfigModel config = configuration.Get<ConfigModel>();
-            if (!Directory.Exists(config.BasePath))
-            {
-                Directory.CreateDirectory(config.BasePath);
-            }
             HistoryFileHandler handler = HistoryFileHandler.Instance(config.BasePath);
             _ = handler.DeleteLogicAsync(CancellationToken.None);
 
