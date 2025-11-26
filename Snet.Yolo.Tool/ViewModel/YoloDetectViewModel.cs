@@ -25,13 +25,14 @@ public class YoloDetectViewModel : BindNotify
 {
     public IdentityOperate YoloInit(OnnxType onnxType)
     {
-        return IdentityOperate.Instance(new Yolo.Server.models.data.IdentityData
+        IdentityOperate identity = IdentityOperate.Instance(new Yolo.Server.models.data.IdentityData
         {
             Hardware = DeviceJson.ToJsonEntity<HardwareData>()?.GetHardware(),
             IdentifyType = onnxType,
             OnnxPath = OnnxModel,
-            SN = $"{onnxType}{OnnxModel}"
+            SN = $"{onnxType}{DeviceJson}"
         });
+        return identity;
     }
 
     public bool _needReinit = true;

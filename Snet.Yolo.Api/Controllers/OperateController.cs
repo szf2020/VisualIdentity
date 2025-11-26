@@ -78,7 +78,7 @@ namespace Snet.Yolo.Api.Controllers
                 OnnxData onnxData = datas[0];
                 IdentityOperate operate = IdentityOperate.Instance(new IdentityData
                 {
-                    SN = PublicHandler.DefaultSN,
+                    SN = $"{PublicHandler.DefaultSN}-{hardwareJson}",
                     OnnxPath = Path.Combine(onnxData.path, onnxData.name),
                     Hardware = hardwareJson.ToJsonEntity<HardwareData>()?.GetHardware() ?? new CpuExecutionProvider(),
                     IdentifyType = onnxData.onnxType ??= OnnxType.ObjectDetection,
@@ -155,7 +155,7 @@ namespace Snet.Yolo.Api.Controllers
                 OnnxData onnxData = datas[0];
                 IdentityOperate operate = IdentityOperate.Instance(new IdentityData
                 {
-                    SN = PublicHandler.DefaultSN,
+                    SN = $"{PublicHandler.DefaultSN}-{hardwareJson}",
                     OnnxPath = Path.Combine(onnxData.path, onnxData.name),
                     Hardware = hardwareJson.ToJsonEntity<HardwareData>()?.GetHardware() ?? new CpuExecutionProvider(),
                     IdentifyType = onnxData.onnxType ??= OnnxType.ObjectDetection,
