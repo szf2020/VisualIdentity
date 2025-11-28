@@ -2,6 +2,9 @@
 using Snet.Utility;
 using Snet.Yolo.Api.Model;
 using Snet.Yolo.Server.models.@enum;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Snet.Yolo.Api.Handler
 {
@@ -54,29 +57,94 @@ namespace Snet.Yolo.Api.Handler
         }
 
         /// <summary>
-        /// 保存图片
+        /// 公共复用的 JsonSerializerOptions，避免每次 new（减少 GC 与开销）
+        /// </summary>
+        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        {
+            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            WriteIndented = true
+        };
+
+        /// <summary>
+        /// 保存图片（同步、高性能、跨平台路径拼接）
         /// </summary>
         /// <typeparam name="T">泛型数据结果对象</typeparam>
-        /// <param name="result">结果图数据</param>
-        /// <param name="origina">原图数据</param>
-        /// <param name="data">结果数据</param>
-        /// <param name="type">检查类型</param>
-        /// <param name="configModel">配置</param>
-        /// <returns></returns>
+        /// <param name="result">结果图数据（字节数组）</param>
+        /// <param name="origina">原图数据（字节数组）</param>
+        /// <param name="data">结果数据对象，会序列化为 JSON</param>
+        /// <param name="type">检查类型（用于目录命名）</param>
+        /// <param name="configModel">配置（包含 BasePath、NameFormat、文件命名格式等）</param>
+        /// <returns>返回生成的 name（基于 configModel.NameFormat）</returns>
         public static string SaveImage<T>(byte[] result, byte[] origina, T data, OnnxType type, ConfigModel configModel)
         {
-            string directory = Path.Combine(configModel.BasePath, DateTime.Now.ToString("yyyy-MM-dd"), type.ToString());
-            string name = DateTime.Now.ToString(configModel.NameFormat);
-            string _result = Path.Combine(directory, string.Format(configModel.ResultImageNamingFormat, name));
-            string _details = Path.Combine(directory, string.Format(configModel.DetailsNamingFormat, name));
-            string _original = Path.Combine(directory, string.Format(configModel.OriginalImageNamingFormat, name));
-            if (!Directory.Exists(directory))
+            // 一次性捕获时间字符串，避免多次调用 DateTime.Now
+            DateTime now = DateTime.Now;
+            string datePart = now.ToString("yyyy-MM-dd");
+            string name = now.ToString(configModel.NameFormat);
+
+            // 跨平台安全的路径拼接
+            string directory = Path.Combine(configModel.BasePath, datePart, type.ToString());
+            Directory.CreateDirectory(directory); // CreateDirectory 对已存在目录安全
+
+            // 使用 Path.Combine 构造文件路径（支持 Windows / Linux / macOS）
+            string resultPath = Path.Combine(directory, string.Format(configModel.ResultImageNamingFormat, name));
+            string detailsPath = Path.Combine(directory, string.Format(configModel.DetailsNamingFormat, name));
+            string originalPath = Path.Combine(directory, string.Format(configModel.OriginalImageNamingFormat, name));
+
+            // 使用 FileStream 写入（避免内部额外拷贝开销）
+            using (var fs = File.Create(resultPath))
             {
-                Directory.CreateDirectory(directory);
+                fs.Write(result, 0, result.Length);
+                fs.Flush();
             }
-            File.WriteAllBytes(_result, result);
-            File.WriteAllText(_details, data.ToJson(true));
-            File.WriteAllBytes(_original, origina);
+
+            using (var fs = File.Create(originalPath))
+            {
+                fs.Write(origina, 0, origina.Length);
+                fs.Flush();
+            }
+
+            // 序列化 JSON 并写入
+            string json = data.ToJson(_jsonOptions);
+            File.WriteAllText(detailsPath, json);
+
+            return name;
+        }
+
+        /// <summary>
+        /// 保存图片（异步并行写盘版本，适合高并发/高吞吐场景）
+        /// </summary>
+        /// <typeparam name="T">泛型数据结果对象</typeparam>
+        /// <param name="result">结果图数据（字节数组）</param>
+        /// <param name="origina">原图数据（字节数组）</param>
+        /// <param name="data">结果数据对象，会序列化为 JSON</param>
+        /// <param name="type">检查类型（用于目录命名）</param>
+        /// <param name="configModel">配置（包含 BasePath、NameFormat、文件命名格式等）</param>
+        /// <returns>返回生成的 name（基于 configModel.NameFormat）</returns>
+        public static async Task<string> SaveImageAsync<T>(byte[] result, byte[] origina, T data, OnnxType type, ConfigModel configModel)
+        {
+            DateTime now = DateTime.Now;
+            string datePart = now.ToString("yyyy-MM-dd");
+            string name = now.ToString(configModel.NameFormat);
+
+            string directory = Path.Combine(configModel.BasePath, datePart, type.ToString());
+            Directory.CreateDirectory(directory);
+
+            string resultPath = Path.Combine(directory, string.Format(configModel.ResultImageNamingFormat, name));
+            string detailsPath = Path.Combine(directory, string.Format(configModel.DetailsNamingFormat, name));
+            string originalPath = Path.Combine(directory, string.Format(configModel.OriginalImageNamingFormat, name));
+
+            // 并行写三份数据到磁盘（结果图、原图、JSON）
+            string json = data.ToJson(_jsonOptions);
+
+            Task t1 = File.WriteAllBytesAsync(resultPath, result);
+            Task t2 = File.WriteAllBytesAsync(originalPath, origina);
+            Task t3 = File.WriteAllTextAsync(detailsPath, json);
+
+            await Task.WhenAll(t1, t2, t3).ConfigureAwait(false);
+
             return name;
         }
     }

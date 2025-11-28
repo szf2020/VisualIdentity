@@ -50,7 +50,8 @@ namespace Snet.Yolo.Api.Controllers
         }
 
         /// <summary>
-        /// 识别
+        /// 识别<br/>
+        /// 追求速度，不记录任何数据
         /// </summary>
         /// <param name="onnxIndex">数据库模型下标</param>
         /// <param name="file">识别的文件</param>
@@ -123,8 +124,10 @@ namespace Snet.Yolo.Api.Controllers
         }
 
         /// <summary>
-        /// 识别返回依据坐标数据处理完成的绘制后图片包含坐标数据<br/>
-        /// 注意:绘制将占用大量时间
+        /// 识别<br/>
+        /// 返回依据坐标数据处理完成的绘制后图片包含坐标数据<br/>
+        /// 绘制将占用大量时间<br/>
+        /// 会把识别的原图与标注的图与数据存储，方便二次查看
         /// </summary>
         /// <param name="onnxIndex">数据库模型下标</param>
         /// <param name="file">识别的文件</param>
@@ -178,12 +181,13 @@ namespace Snet.Yolo.Api.Controllers
                                 List<ObjectDetection> datasResult = objectDetectionResultDatas.ToObjectDetection();
                                 using SKBitmap sKBitmap = image.Draw(datasResult);
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
-                                string name = ImageHandler.SaveImage(ibytes, imageBytes, objectDetectionResultDatas, onnxData.onnxType.Value, _config);
-                                string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ObjectDetectionResultData>>(objectDetectionResultDatas, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
+                                string name = await ImageHandler.SaveImageAsync(ibytes, imageBytes, objectDetectionResultDatas, onnxData.onnxType.Value, _config);
+                                string GetMarkImageUrl = Url.Action("GetMarkImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                string GetOriginalImageUrl = Url.Action("GetOriginalImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ObjectDetectionResultData>>(objectDetectionResultDatas, GetMarkImageUrl, GetOriginalImageUrl), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
+                        break;
                     case OnnxType.Segmentation:
                         SegmentationData segmentation = paramJson.ToJsonEntity<SegmentationData>();
                         segmentation.File = imageBytes;
@@ -195,12 +199,13 @@ namespace Snet.Yolo.Api.Controllers
                                 List<Segmentation> datasResult = segmentationDatas.ToSegmentation();
                                 using SKBitmap sKBitmap = image.Draw(datasResult);
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
-                                string name = ImageHandler.SaveImage(ibytes, imageBytes, segmentationDatas, onnxData.onnxType.Value, _config);
-                                string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<SegmentationResultData>>(segmentationDatas, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
+                                string name = await ImageHandler.SaveImageAsync(ibytes, imageBytes, segmentationDatas, onnxData.onnxType.Value, _config);
+                                string GetMarkImageUrl = Url.Action("GetMarkImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                string GetOriginalImageUrl = Url.Action("GetOriginalImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<SegmentationResultData>>(segmentationDatas, GetMarkImageUrl, GetOriginalImageUrl), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
+                        break;
                     case OnnxType.Classification:
                         ClassificationData classification = paramJson.ToJsonEntity<ClassificationData>();
                         classification.File = imageBytes;
@@ -212,12 +217,13 @@ namespace Snet.Yolo.Api.Controllers
                                 List<Classification> datasResult = classificationDatas.ToClassification();
                                 using SKBitmap sKBitmap = image.Draw(datasResult);
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
-                                string name = ImageHandler.SaveImage(ibytes, imageBytes, classificationDatas, onnxData.onnxType.Value, _config);
-                                string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ClassificationResultData>>(classificationDatas, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
+                                string name = await ImageHandler.SaveImageAsync(ibytes, imageBytes, classificationDatas, onnxData.onnxType.Value, _config);
+                                string GetMarkImageUrl = Url.Action("GetMarkImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                string GetOriginalImageUrl = Url.Action("GetOriginalImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ClassificationResultData>>(classificationDatas, GetMarkImageUrl, GetOriginalImageUrl), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
+                        break;
                     case OnnxType.PoseEstimation:
                         PoseEstimationData poseEstimation = paramJson.ToJsonEntity<PoseEstimationData>();
                         poseEstimation.File = imageBytes;
@@ -229,12 +235,13 @@ namespace Snet.Yolo.Api.Controllers
                                 List<PoseEstimation> datasResult = poseEstimationDatas.ToPoseEstimation();
                                 using SKBitmap sKBitmap = image.Draw(datasResult, new PoseDrawingOptions { KeyPointMarkers = _poseHandler.GetKeyPoints(), PoseConfidence = poseEstimation.Confidence, BorderThickness = 3 });
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
-                                string name = ImageHandler.SaveImage(ibytes, imageBytes, poseEstimationDatas, onnxData.onnxType.Value, _config);
-                                string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<PoseEstimationResultData>>(poseEstimationDatas, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
+                                string name = await ImageHandler.SaveImageAsync(ibytes, imageBytes, poseEstimationDatas, onnxData.onnxType.Value, _config);
+                                string GetMarkImageUrl = Url.Action("GetMarkImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                string GetOriginalImageUrl = Url.Action("GetOriginalImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<PoseEstimationResultData>>(poseEstimationDatas, GetMarkImageUrl, GetOriginalImageUrl), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
+                        break;
                     case OnnxType.ObbDetection:
                         ObbDetectionData obbDetection = paramJson.ToJsonEntity<ObbDetectionData>();
                         obbDetection.File = imageBytes;
@@ -246,13 +253,15 @@ namespace Snet.Yolo.Api.Controllers
                                 List<OBBDetection> datasResult = obbDetections.ToObbDetection();
                                 using SKBitmap sKBitmap = image.Draw(datasResult);
                                 byte[] ibytes = sKBitmap.GteImageByte(out string contentType);
-                                string name = ImageHandler.SaveImage(ibytes, imageBytes, obbDetections, onnxData.onnxType.Value, _config);
-                                string url = Url.Action("GetImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
-                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ObbDetectionResultData>>(obbDetections, url), TimeHandler.Instance(ms).StopRecord().milliseconds);
+                                string name = await ImageHandler.SaveImageAsync(ibytes, imageBytes, obbDetections, onnxData.onnxType.Value, _config);
+                                string GetMarkImageUrl = Url.Action("GetMarkImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                string GetOriginalImageUrl = Url.Action("GetOriginalImage", "Operate", new { name = name, type = onnxData.onnxType.Value }, Request.Scheme);
+                                return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<List<ObbDetectionResultData>>(obbDetections, GetMarkImageUrl, GetOriginalImageUrl), TimeHandler.Instance(ms).StopRecord().milliseconds);
                             }
                         }
-                        return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
+                        break;
                 }
+                return OperateResult.CreateFailureResult("Identity Failure", TimeHandler.Instance(ms).StopRecord().milliseconds);
             }
             return result;
         }
@@ -320,10 +329,10 @@ namespace Snet.Yolo.Api.Controllers
         public async Task<OperateResult> QuerysAsync() => await _operate.QueryAsync();
 
         /// <summary>
-        /// 获取本地图片
+        /// 获取本地原始的图片
         /// </summary>
         /// <param name="name">
-        /// 图片名称（文件名的一部分，不包含扩展名）
+        /// 图片名称（文件名“时间区域”的一部分，不包含扩展名）
         /// </param>
         /// <param name="type">
         /// 模型类型（用于定位子目录）
@@ -332,7 +341,53 @@ namespace Snet.Yolo.Api.Controllers
         /// 成功时返回图片文件，失败时返回错误信息
         /// </returns>
         [HttpGet]
-        public IActionResult GetImage(string name, OnnxType type)
+        public IActionResult GetOriginalImage(string name, OnnxType type)
+        {
+            // 参数校验：name 不能为空
+            if (string.IsNullOrEmpty(name))
+                return BadRequest("Parameter 'name' cannot be null or empty.");
+
+            // 拼接目录路径：BasePath/yyyy-MM-dd/OnnxType
+            string directory = Path.Combine(_config.BasePath, DateTime.Now.ToString("yyyy-MM-dd"), type.ToString());
+
+            // 判断目录是否存在
+            if (!Directory.Exists(directory))
+                return NotFound("Target directory does not exist.");
+
+            // 获取目录下的所有文件
+            string[] files = Directory.GetFiles(directory, "*.*", SearchOption.TopDirectoryOnly);
+
+            // 按照配置规则格式化目标文件名
+            string expectedFileName = string.Format(_config.OriginalImageNamingFormat, name);
+
+            // 查找第一个匹配的文件
+            string path = files.FirstOrDefault(f => Path.GetFileName(f).Contains(expectedFileName));
+
+            // 校验文件是否存在
+            if (string.IsNullOrEmpty(path) || !System.IO.File.Exists(path))
+                return NotFound("Target file not found.");
+
+            // 读取文件字节数据
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            // 以 image/jpeg 格式返回图片
+            return File(bytes, "image/jpeg");
+        }
+
+        /// <summary>
+        /// 获取本地标注后的图片
+        /// </summary>
+        /// <param name="name">
+        /// 图片名称（文件名“时间区域”的一部分，不包含扩展名）
+        /// </param>
+        /// <param name="type">
+        /// 模型类型（用于定位子目录）
+        /// </param>
+        /// <returns>
+        /// 成功时返回图片文件，失败时返回错误信息
+        /// </returns>
+        [HttpGet]
+        public IActionResult GetMarkImage(string name, OnnxType type)
         {
             // 参数校验：name 不能为空
             if (string.IsNullOrEmpty(name))
@@ -363,6 +418,71 @@ namespace Snet.Yolo.Api.Controllers
 
             // 以 image/jpeg 格式返回图片
             return File(bytes, "image/jpeg");
+        }
+
+        /// <summary>
+        /// 获取本地图片的详情，有原图地址，标注后的图片地址，还有坐标
+        /// </summary>
+        /// <param name="name">
+        /// 图片名称（文件名的一部分，不包含扩展名）
+        /// </param>
+        /// <param name="type">
+        /// 模型类型（用于定位子目录）
+        /// </param>
+        /// <returns>
+        /// 成功时返回有原图地址，标注后的图片地址，还有坐标，失败时返回错误信息
+        /// </returns>
+        [HttpGet]
+        public async Task<OperateResult> GetImageDetails(string name, OnnxType type)
+        {
+            string ms = DateTime.Now.ToString(_config.NameFormat);
+            TimeHandler.Instance(ms).StartRecord();
+            // 参数校验：name 不能为空
+            if (string.IsNullOrEmpty(name))
+                return OperateResult.CreateFailureResult("Parameter 'name' cannot be null or empty.", TimeHandler.Instance(ms).StopRecord().milliseconds);
+
+            // 拼接目录路径：BasePath/yyyy-MM-dd/OnnxType
+            string directory = Path.Combine(_config.BasePath, DateTime.Now.ToString("yyyy-MM-dd"), type.ToString());
+
+            // 判断目录是否存在
+            if (!Directory.Exists(directory))
+                return OperateResult.CreateFailureResult("Target directory does not exist.", TimeHandler.Instance(ms).StopRecord().milliseconds);
+
+            // 获取目录下的所有文件
+            string[] files = Directory.GetFiles(directory, "*.*", SearchOption.TopDirectoryOnly);
+
+            // 原图
+            string OriginalImageNamingFormat = string.Format(_config.OriginalImageNamingFormat, name);
+            // 原图匹配的文件
+            string OriginalImageNamingFormatPath = files.FirstOrDefault(f => Path.GetFileName(f).Contains(OriginalImageNamingFormat));
+
+
+            // 标注后的图
+            string ResultImageNamingFormat = string.Format(_config.ResultImageNamingFormat, name);
+            // 标注后的图匹配的文件
+            string ResultImageNamingFormatPath = files.FirstOrDefault(f => Path.GetFileName(f).Contains(ResultImageNamingFormat));
+
+
+            // 详情
+            string DetailsNamingFormat = string.Format(_config.DetailsNamingFormat, name);
+            // 详情匹配的文件
+            string DetailsNamingFormatPath = files.FirstOrDefault(f => Path.GetFileName(f).Contains(DetailsNamingFormat));
+            // Json数据
+            object DetailsNamingFormatObject = System.IO.File.ReadAllText(DetailsNamingFormatPath).ToJsonEntity<object>();
+
+            // 校验文件是否存在
+            if (string.IsNullOrEmpty(OriginalImageNamingFormatPath) || !System.IO.File.Exists(OriginalImageNamingFormatPath) &&
+                string.IsNullOrEmpty(ResultImageNamingFormatPath) || !System.IO.File.Exists(ResultImageNamingFormatPath) &&
+                string.IsNullOrEmpty(DetailsNamingFormatPath) || !System.IO.File.Exists(DetailsNamingFormatPath))
+                return OperateResult.CreateFailureResult("Target file not found.", TimeHandler.Instance(ms).StopRecord().milliseconds);
+
+            // 原图地址
+            string OriginalImageNamingFormatUrl = Url.Action("GetOriginalImage", "Operate", new { name = name, type = type }, Request.Scheme);
+            // 标注后地址
+            string ResultImageNamingFormatUrl = Url.Action("GetMarkImage", "Operate", new { name = name, type = type }, Request.Scheme);
+
+            return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<object>(DetailsNamingFormatObject, ResultImageNamingFormatUrl, OriginalImageNamingFormatUrl), TimeHandler.Instance(ms).StopRecord().milliseconds);
+
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using Snet.Core.extend;
 using Snet.Log;
+using Snet.Yolo.Api.Model;
 
 namespace Snet.Yolo.Api.Handler
 {
@@ -17,11 +18,23 @@ namespace Snet.Yolo.Api.Handler
         /// 无参构造函数
         /// </summary>
         public HistoryFileHandler() : base() { }
-
+        /// <summary>
+        /// 配置
+        /// </summary>
+        private ConfigModel _config;
         /// <summary>
         /// 是否在删除文件夹
         /// </summary>
         private readonly SemaphoreSlim _deleteLock = new(1, 1);
+
+        /// <summary>
+        /// 设置配置
+        /// </summary>
+        /// <param name="config">配置数据</param>
+        public void SetConfig(ConfigModel config)
+        {
+            _config = config;
+        }
         /// <summary>
         /// 删除逻辑异步
         /// </summary>
@@ -76,16 +89,19 @@ namespace Snet.Yolo.Api.Handler
                             System.Globalization.DateTimeStyles.None,
                             out DateTime folderDate))
                     {
-                        // 判断是否早于指定保留天数
-                        if (folderDate <= DateTime.Today.AddDays(-1))
+                        if (_config?.RetentionDays != null)
                         {
-                            try
+                            // 判断是否早于指定保留天数
+                            if (folderDate <= DateTime.Today.AddDays(-_config.RetentionDays))
                             {
-                                Directory.Delete(folder, true); // 递归删除整个文件夹
-                            }
-                            catch (Exception ex)
-                            {
-                                LogHelper.Error($"删除历史文件：{folder}, 错误：{ex.Message}", exception: ex);
+                                try
+                                {
+                                    Directory.Delete(folder, true); // 递归删除整个文件夹
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogHelper.Error($"删除历史文件：{folder}, 错误：{ex.Message}", exception: ex);
+                                }
                             }
                         }
                     }

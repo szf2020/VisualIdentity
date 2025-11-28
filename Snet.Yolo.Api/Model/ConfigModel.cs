@@ -29,5 +29,10 @@
         /// 详情命名格式
         /// </summary>
         public string DetailsNamingFormat { get; set; }
+
+        /// <summary>
+        /// 识别的数据保留天数，默认30天
+        /// </summary>
+        public int RetentionDays { get; set; } = 30;
     }
 }

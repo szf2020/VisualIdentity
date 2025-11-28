@@ -49,6 +49,7 @@ namespace Snet.Yolo.Api
             IConfiguration configuration = builder.Configuration.GetSection("ConfigModel");
             ConfigModel config = configuration.Get<ConfigModel>();
             HistoryFileHandler handler = HistoryFileHandler.Instance(config.BasePath);
+            handler.SetConfig(config);
             _ = handler.DeleteLogicAsync(CancellationToken.None);
 
             builder.Services.Configure<ConfigModel>(configuration);
