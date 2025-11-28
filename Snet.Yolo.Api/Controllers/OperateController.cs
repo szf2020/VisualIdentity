@@ -424,7 +424,7 @@ namespace Snet.Yolo.Api.Controllers
         /// 获取本地图片的详情，有原图地址，标注后的图片地址，还有坐标
         /// </summary>
         /// <param name="name">
-        /// 图片名称（文件名的一部分，不包含扩展名）
+        /// 图片名称（文件名“时间区域”的一部分，不包含扩展名）
         /// </param>
         /// <param name="type">
         /// 模型类型（用于定位子目录）
@@ -481,7 +481,7 @@ namespace Snet.Yolo.Api.Controllers
             // 标注后地址
             string ResultImageNamingFormatUrl = Url.Action("GetMarkImage", "Operate", new { name = name, type = type }, Request.Scheme);
 
-            return OperateResult.CreateSuccessResult("Identity Success", new IdentityResultData<object>(DetailsNamingFormatObject, ResultImageNamingFormatUrl, OriginalImageNamingFormatUrl), TimeHandler.Instance(ms).StopRecord().milliseconds);
+            return OperateResult.CreateSuccessResult("GetImageDetails Success", new IdentityResultData<object>(DetailsNamingFormatObject, ResultImageNamingFormatUrl, OriginalImageNamingFormatUrl), TimeHandler.Instance(ms).StopRecord().milliseconds);
 
         }
 
