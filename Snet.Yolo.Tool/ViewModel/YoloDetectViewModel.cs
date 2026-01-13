@@ -110,7 +110,8 @@ public class YoloDetectViewModel : BindNotify
     /// <summary>
     /// 停止验证
     /// </summary>
-    public IAsyncRelayCommand V_Image_Stop => new AsyncRelayCommand(V_Image_StopAsync);
+    public IAsyncRelayCommand V_Image_Stop => p_V_Image_Stop ??= new AsyncRelayCommand(V_Image_StopAsync);
+    IAsyncRelayCommand p_V_Image_Stop;
     private async Task V_Image_StopAsync()
     {
         if (tokenSource != null)
@@ -127,7 +128,8 @@ public class YoloDetectViewModel : BindNotify
     /// <summary>
     /// 模型路径选择命令
     /// </summary>
-    public IAsyncRelayCommand OnnxModelSelect => new AsyncRelayCommand(OnnxModelSelectAsync);
+    public IAsyncRelayCommand OnnxModelSelect => p_OnnxModelSelect ??= new AsyncRelayCommand(OnnxModelSelectAsync);
+    IAsyncRelayCommand p_OnnxModelSelect;
     private Task OnnxModelSelectAsync()
     {
         string path = Win32Handler.Select(App.LanguageOperate.GetLanguageValue("请选择模型路径"), false, new Dictionary<string, string> { ["onnx"] = "*.onnx" });
@@ -141,7 +143,8 @@ public class YoloDetectViewModel : BindNotify
     /// <summary>
     /// 源路径选择命令
     /// </summary>
-    public IAsyncRelayCommand SourcelPathSelect => new AsyncRelayCommand(SourcelPathSelectAsync);
+    public IAsyncRelayCommand SourcelPathSelect => p_SourcelPathSelect ??= new AsyncRelayCommand(SourcelPathSelectAsync);
+    IAsyncRelayCommand p_SourcelPathSelect;
     private async Task SourcelPathSelectAsync()
     {
         string path = Win32Handler.Select(App.LanguageOperate.GetLanguageValue("请选择需要验证图片的文件夹"), true);
@@ -227,7 +230,8 @@ public class YoloDetectViewModel : BindNotify
         get => GetProperty(() => Message);
         set => SetProperty(() => Message, value);
     }
-    public IAsyncRelayCommand MessageClear => new AsyncRelayCommand<string>(MessageClearAsync);
+    public IAsyncRelayCommand MessageClear => p_MessageClear ??= new AsyncRelayCommand<string>(MessageClearAsync);
+    IAsyncRelayCommand p_MessageClear;
     private Task MessageClearAsync(string? e)
     {
         Message = string.Empty;
@@ -237,7 +241,8 @@ public class YoloDetectViewModel : BindNotify
     /// <summary>
     /// 信息框事件
     /// </summary>
-    public IAsyncRelayCommand MessageTextChanged => new AsyncRelayCommand<TextChangedEventArgs>(MessageTextChangedAsync);
+    public IAsyncRelayCommand MessageTextChanged => p_MessageTextChanged ??= new AsyncRelayCommand<TextChangedEventArgs>(MessageTextChangedAsync);
+    IAsyncRelayCommand p_MessageTextChanged;
     /// <summary>
     /// 信息框事件
     /// 让滚动条一直处在最下方
@@ -292,7 +297,8 @@ public class YoloDetectViewModel : BindNotify
     /// <summary>
     /// 验证所有图片
     /// </summary>
-    public IAsyncRelayCommand VA_Image => new AsyncRelayCommand(VA_ImageAsync);
+    public IAsyncRelayCommand VA_Image => p_VA_Image ??= new AsyncRelayCommand(VA_ImageAsync);
+    IAsyncRelayCommand p_VA_Image;
     public async Task VA_ImageAsync()
     {
         if (tokenSource == null)
@@ -317,7 +323,8 @@ public class YoloDetectViewModel : BindNotify
     /// <summary>
     /// 验证选中图片
     /// </summary>
-    public IAsyncRelayCommand VS_Image => new AsyncRelayCommand(VS_ImageAsync);
+    public IAsyncRelayCommand VS_Image => p_VS_Image ??= new AsyncRelayCommand(VS_ImageAsync);
+    IAsyncRelayCommand p_VS_Image;
     public async Task VS_ImageAsync()
     {
         if (tokenSource == null)
@@ -339,7 +346,8 @@ public class YoloDetectViewModel : BindNotify
     /// <summary>
     /// 向下验证
     /// </summary>
-    public IAsyncRelayCommand XV_Image => new AsyncRelayCommand(XV_ImageAsync);
+    public IAsyncRelayCommand XV_Image => p_XV_Image ??= new AsyncRelayCommand(XV_ImageAsync);
+    IAsyncRelayCommand p_XV_Image;
     public async Task XV_ImageAsync()
     {
         if (tokenSource == null)
@@ -365,7 +373,8 @@ public class YoloDetectViewModel : BindNotify
     /// <summary>
     /// 向上验证
     /// </summary>
-    public IAsyncRelayCommand SV_Image => new AsyncRelayCommand(SV_ImageAsync);
+    public IAsyncRelayCommand SV_Image => p_SV_Image ??= new AsyncRelayCommand(SV_ImageAsync);
+    IAsyncRelayCommand p_SV_Image;
     public async Task SV_ImageAsync()
     {
         if (tokenSource == null)
@@ -466,7 +475,8 @@ public class YoloDetectViewModel : BindNotify
 
     public List<double> Confidences = new List<double>();
 
-    public IAsyncRelayCommand Start => new AsyncRelayCommand(StartAsync);
+    public IAsyncRelayCommand Start => p_Start ??= new AsyncRelayCommand(StartAsync);
+    IAsyncRelayCommand p_Start;
     private async Task StartAsync()
     {
         if (statistics)
@@ -480,7 +490,8 @@ public class YoloDetectViewModel : BindNotify
     }
 
 
-    public IAsyncRelayCommand Stop => new AsyncRelayCommand(StopAsync);
+    public IAsyncRelayCommand Stop => p_Stop ??= new AsyncRelayCommand(StopAsync);
+    IAsyncRelayCommand p_Stop;
     private async Task StopAsync()
     {
         if (!statistics)
@@ -508,7 +519,8 @@ public class YoloDetectViewModel : BindNotify
     /// <summary>
     /// 右键复制
     /// </summary>
-    public IAsyncRelayCommand MenuItemCopyClick => new AsyncRelayCommand<object>(OnMenuItemCopyClickAsync);
+    public IAsyncRelayCommand MenuItemCopyClick => p_MenuItemCopyClick ??= new AsyncRelayCommand<object>(OnMenuItemCopyClickAsync);
+    IAsyncRelayCommand p_MenuItemCopyClick;
     /// <summary>
     /// 右键复制 被点击
     /// </summary>

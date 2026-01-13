@@ -7,6 +7,5 @@ namespace Snet.Yolo.Tool
         public MainWindowViewModel()
         {
         }
-
     }
 }
