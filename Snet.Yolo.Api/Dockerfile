@@ -25,9 +25,17 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Snet.Yolo.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # 更新包索引并安装 SkiaSharp 依赖
-RUN apt-get update && \
-    apt-get install -y libfontconfig1 libharfbuzz0b libfreetype6 && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends \
+        libgomp1 \
+        libnuma1 \
+        libfontconfig1 \
+        libfreetype6 \
+        libx11-6 \
+        libxrender1 \
+        libxcb1 \
+        libxrandr2 \
+    && rm -rf /var/lib/apt/lists/*
 
 # 此阶段在生产中使用，或在常规模式下从 VS 运行时使用(在不使用调试配置时为默认值)
 FROM base AS final

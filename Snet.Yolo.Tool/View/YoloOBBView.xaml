@@ -58,6 +58,7 @@
                     </Grid.ColumnDefinitions>
                     <snet:TextBoxControl
                         Grid.Column="0"
+                        
                         Margin="0,0,0,0"
                         Hint="{snet:Loc 模型路径}"
                         Icon="{DynamicResource Path}"
@@ -76,38 +77,43 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <snet:TextBoxControl
+                        
                         Margin="0,10,0,0"
                         Hint="{snet:Loc 原始图片路径}"
                         Icon="{DynamicResource Path}"
                         Text="{Binding SourcelPath}" />
                     <snet:ButtonControl
                         Grid.Column="1"
+                        Height="30"
                         Margin="10,10,0,0"
                         ui:ButtonAssist.CornerRadius="5"
                         Command="{Binding SourcelPathSelect}"
                         Content="{snet:Loc 选择}"
                         Icon="{DynamicResource Select}" />
                 </Grid>
-                <Grid Margin="0,15,0,0">
+                <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <snet:TextBoxControl
                         Grid.Column="0"
+                        
                         Margin="0,0,10,0"
                         Hint="{snet:Loc 置信度阈值}"
                         Icon="{DynamicResource Value}"
                         Text="{Binding Confidence}" />
                     <snet:TextBoxControl
                         Grid.Column="1"
+                        
                         Hint="{snet:Loc 交并比阈值}"
                         Icon="{DynamicResource Value}"
                         Text="{Binding Iou}" />
                 </Grid>
                 <Grid>
                     <snet:TextBoxControl
-                        Margin="0,15,0,0"
+                        
+                        Margin="0,10,0,0"
                         Hint="{snet:Loc 对应硬件的JSON字符串}"
                         Icon="{DynamicResource 硬件}"
                         Text="{Binding DeviceJson}" />
