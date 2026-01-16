@@ -12,7 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Snet.Windows.Controls" Version="26.15.2" />
+		<PackageReference Include="Snet.Windows.Controls" Version="26.16.1" />
 		<PackageReference Include="Snet.Yolo.Server" Version="26.15.1" />
 	</ItemGroup>
 	<ItemGroup>
