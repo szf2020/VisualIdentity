@@ -247,4 +247,76 @@
   <data name="SystemTitle" xml:space="preserve">
     <value>[ Shunnet.top ] Yolo DebugTool</value>
   </data>
+  <data name="YoloDataUnification" xml:space="preserve">
+    <value>[ Yolo DataUnification ]</value>
+  </data>
+  <data name="处理" xml:space="preserve">
+    <value>Handle</value>
+  </data>
+  <data name="下标" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="名称" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="描述" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="操作" xml:space="preserve">
+    <value>Operate</value>
+  </data>
+  <data name="存储路径" xml:space="preserve">
+    <value>StoragePath</value>
+  </data>
+  <data name="选择图片路径" xml:space="preserve">
+    <value>SelectImagePath</value>
+  </data>
+  <data name="选择标签路径" xml:space="preserve">
+    <value>SelectLabelPath</value>
+  </data>
+  <data name="标注数据处理" xml:space="preserve">
+    <value>Label data processing</value>
+  </data>
+  <data name="选择存储路径" xml:space="preserve">
+    <value>SelectStoragePath</value>
+  </data>
+  <data name="添加项" xml:space="preserve">
+    <value>AddItem</value>
+  </data>
+  <data name="移除项" xml:space="preserve">
+    <value>RemoveItem</value>
+  </data>
+  <data name="修改项" xml:space="preserve">
+    <value>UpdateItem</value>
+  </data>
+  <data name="针对于缺陷识别的数据统一，把多个单项单标签的标注数据统一到一起，自动批量修改标签中的下标数据" xml:space="preserve">
+    <value>For the unification of data for defect recognition, multiple sets of labeled data with individual items and single labels are consolidated, and the subscript data in the labels are automatically modified in batch</value>
+  </data>
+  <data name="处理完成" xml:space="preserve">
+    <value>Process completed</value>
+  </data>
+  <data name="，图片路径为空" xml:space="preserve">
+    <value>, The image path is empty</value>
+  </data>
+  <data name="，标签路径为空" xml:space="preserve">
+    <value>, The tag path is empty</value>
+  </data>
+  <data name="存储路径为空" xml:space="preserve">
+    <value>The storage path is empty</value>
+  </data>
+  <data name="图片文件夹名称" xml:space="preserve">
+    <value>Image folder name</value>
+  </data>
+  <data name="标签文件夹名称" xml:space="preserve">
+    <value>Label folder name</value>
+  </data>
+  <data name="选择父路径" xml:space="preserve">
+    <value>SelectParentPath</value>
+  </data>
+  <data name="处理异常：" xml:space="preserve">
+    <value>Exception handling:</value>
+  </data>
+  <data name="提示" xml:space="preserve">
+    <value>Tips</value>
+  </data>
 </root>

@@ -78,6 +78,7 @@
                 </TabItem.Header>
                 <view:YoloDetectView />
             </TabItem>
+
             <TabItem Width="120" Margin="0,5,5,5">
                 <TabItem.Header>
                     <StackPanel>
@@ -149,6 +150,28 @@
                     </StackPanel>
                 </TabItem.Header>
                 <view:YoloClassifyView />
+            </TabItem>
+
+            <TabItem
+                Width="150"
+                Margin="0,5,5,5"
+                ToolTip="{snet:Loc 针对于缺陷识别的数据统一，把多个单项单标签的标注数据统一到一起，自动批量修改标签中的下标数据}">
+                <TabItem.Header>
+                    <StackPanel>
+                        <ui:PackIcon
+                            Width="30"
+                            Height="30"
+                            HorizontalAlignment="Center"
+                            Foreground="{DynamicResource MaterialDesign.Brush.Secondary}"
+                            Kind="ConsoleNetworkOutline" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Foreground="{DynamicResource MaterialDesign.Brush.Secondary}"
+                            Text="{snet:Loc YoloDataUnification}"
+                            TextOptions.TextFormattingMode="Display" />
+                    </StackPanel>
+                </TabItem.Header>
+                <view:YoloDataUnificationView />
             </TabItem>
         </TabControl>
     </Grid>

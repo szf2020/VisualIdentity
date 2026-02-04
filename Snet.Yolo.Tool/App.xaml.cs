@@ -1,6 +1,8 @@
-﻿using Snet.Core.handler;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Snet.Core.handler;
 using Snet.Log;
 using Snet.Model.data;
+using Snet.Windows.Controls.property;
 using Snet.Windows.Core.handler;
 using System.Windows;
 
@@ -31,6 +33,14 @@ namespace Snet.Yolo.Tool
         /// </summary>
         private void OnStartup(object sender, StartupEventArgs e)
         {
+            //注入参数设置
+            PropertyControl control = new PropertyControl();
+            control.ButtonVisibility = Visibility.Visible;
+            InjectionWpf.AddService(s =>
+            {
+                s.AddSingleton(control);
+            });
+
             //启动全局异常捕捉
             RegisterEvents();
 

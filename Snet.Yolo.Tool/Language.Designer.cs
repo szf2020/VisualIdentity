@@ -88,6 +88,15 @@ namespace Snet.Yolo.Tool {
         }
         
         /// <summary>
+        ///   查找类似 [ Yolo 数据统一 ] 的本地化字符串。
+        /// </summary>
+        internal static string YoloDataUnification {
+            get {
+                return ResourceManager.GetString("YoloDataUnification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 [ Yolo 检测 ] 的本地化字符串。
         /// </summary>
         internal static string YoloDetect {
@@ -124,6 +133,15 @@ namespace Snet.Yolo.Tool {
         }
         
         /// <summary>
+        ///   查找类似 下标 的本地化字符串。
+        /// </summary>
+        internal static string 下标 {
+            get {
+                return ResourceManager.GetString("下标", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 个 的本地化字符串。
         /// </summary>
         internal static string 个 {
@@ -147,6 +165,15 @@ namespace Snet.Yolo.Tool {
         internal static string 交并比阈值 {
             get {
                 return ResourceManager.GetString("交并比阈值", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 修改项 的本地化字符串。
+        /// </summary>
+        internal static string 修改项 {
+            get {
+                return ResourceManager.GetString("修改项", resourceCulture);
             }
         }
         
@@ -223,6 +250,15 @@ namespace Snet.Yolo.Tool {
         }
         
         /// <summary>
+        ///   查找类似 名称 的本地化字符串。
+        /// </summary>
+        internal static string 名称 {
+            get {
+                return ResourceManager.GetString("名称", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 向上验证 的本地化字符串。
         /// </summary>
         internal static string 向上验证 {
@@ -241,11 +277,38 @@ namespace Snet.Yolo.Tool {
         }
         
         /// <summary>
+        ///   查找类似 图片文件夹名称 的本地化字符串。
+        /// </summary>
+        internal static string 图片文件夹名称 {
+            get {
+                return ResourceManager.GetString("图片文件夹名称", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 坐标 的本地化字符串。
         /// </summary>
         internal static string 坐标 {
             get {
                 return ResourceManager.GetString("坐标", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 处理 的本地化字符串。
+        /// </summary>
+        internal static string 处理 {
+            get {
+                return ResourceManager.GetString("处理", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 处理完成 的本地化字符串。
+        /// </summary>
+        internal static string 处理完成 {
+            get {
+                return ResourceManager.GetString("处理完成", resourceCulture);
             }
         }
         
@@ -264,6 +327,24 @@ namespace Snet.Yolo.Tool {
         internal static string 大小 {
             get {
                 return ResourceManager.GetString("大小", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 存储路径 的本地化字符串。
+        /// </summary>
+        internal static string 存储路径 {
+            get {
+                return ResourceManager.GetString("存储路径", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 存储路径为空 的本地化字符串。
+        /// </summary>
+        internal static string 存储路径为空 {
+            get {
+                return ResourceManager.GetString("存储路径为空", resourceCulture);
             }
         }
         
@@ -304,6 +385,33 @@ namespace Snet.Yolo.Tool {
         }
         
         /// <summary>
+        ///   查找类似 描述 的本地化字符串。
+        /// </summary>
+        internal static string 描述 {
+            get {
+                return ResourceManager.GetString("描述", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 提示 的本地化字符串。
+        /// </summary>
+        internal static string 提示 {
+            get {
+                return ResourceManager.GetString("提示", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 操作 的本地化字符串。
+        /// </summary>
+        internal static string 操作 {
+            get {
+                return ResourceManager.GetString("操作", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 未检索到图片 的本地化字符串。
         /// </summary>
         internal static string 未检索到图片 {
@@ -313,11 +421,29 @@ namespace Snet.Yolo.Tool {
         }
         
         /// <summary>
+        ///   查找类似 标注数据处理 的本地化字符串。
+        /// </summary>
+        internal static string 标注数据处理 {
+            get {
+                return ResourceManager.GetString("标注数据处理", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 标签 的本地化字符串。
         /// </summary>
         internal static string 标签 {
             get {
                 return ResourceManager.GetString("标签", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 标签文件夹名称 的本地化字符串。
+        /// </summary>
+        internal static string 标签文件夹名称 {
+            get {
+                return ResourceManager.GetString("标签文件夹名称", resourceCulture);
             }
         }
         
@@ -336,6 +462,15 @@ namespace Snet.Yolo.Tool {
         internal static string 消息 {
             get {
                 return ResourceManager.GetString("消息", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 添加项 的本地化字符串。
+        /// </summary>
+        internal static string 添加项 {
+            get {
+                return ResourceManager.GetString("添加项", resourceCulture);
             }
         }
         
@@ -363,6 +498,15 @@ namespace Snet.Yolo.Tool {
         internal static string 目标 {
             get {
                 return ResourceManager.GetString("目标", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 移除项 的本地化字符串。
+        /// </summary>
+        internal static string 移除项 {
+            get {
+                return ResourceManager.GetString("移除项", resourceCulture);
             }
         }
         
@@ -444,6 +588,42 @@ namespace Snet.Yolo.Tool {
         internal static string 选择 {
             get {
                 return ResourceManager.GetString("选择", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 选择图片路径 的本地化字符串。
+        /// </summary>
+        internal static string 选择图片路径 {
+            get {
+                return ResourceManager.GetString("选择图片路径", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 选择存储路径 的本地化字符串。
+        /// </summary>
+        internal static string 选择存储路径 {
+            get {
+                return ResourceManager.GetString("选择存储路径", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 选择标签路径 的本地化字符串。
+        /// </summary>
+        internal static string 选择标签路径 {
+            get {
+                return ResourceManager.GetString("选择标签路径", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 选择父路径 的本地化字符串。
+        /// </summary>
+        internal static string 选择父路径 {
+            get {
+                return ResourceManager.GetString("选择父路径", resourceCulture);
             }
         }
         
