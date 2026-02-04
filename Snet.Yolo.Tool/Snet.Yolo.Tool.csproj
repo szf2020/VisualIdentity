@@ -12,8 +12,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Snet.Windows.Controls" Version="26.21.1" />
-		<PackageReference Include="Snet.Yolo.Server" Version="26.21.1" />
+		<PackageReference Include="Snet.Windows.Controls" Version="26.35.1" />
+		<PackageReference Include="Snet.Yolo.Server" Version="26.35.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<Resource Include="Icon.ico" />
